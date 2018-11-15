@@ -28,8 +28,13 @@ if (program.args.length !== 1) program.help();
 try {
   var dir = program.directory;
   var version = program.args.shift();
+  var info
 
-  var info = bump(dir, version);
+  if(program.source){
+    info = bump(dir, version, program.source)
+  }else {
+    info = bump(dir, version);
+  }
 } catch (e) {
   fatal(e.message);
 }
