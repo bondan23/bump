@@ -14,7 +14,8 @@ program
   .usage('[options] <version>')
   .version(pkg.version)
   .description('Bump the version number in your manifest files, where <version> can be semver version or type')
-  .option('-d, --directory <dir>', 'Determine the directory to use as the root (default: pwd)', process.cwd())
+  .option('-d, --directory <dir>', 'Default value as the root directory', process.cwd())
+  .option('-s, --source <jsonfile>', 'Default value is package.json')
   .option('-p, --print-version', 'Outputs only the new version number after complete')
   .parse(process.argv);
 

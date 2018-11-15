@@ -29,24 +29,43 @@ function bump(root, version, manifests){
   var ret = {};
   var prev;
 
-  manifests.forEach(function(manifest){
-    var path = resolve(root, manifest);
+  if(Array.isArray(manifests)){
+    manifests.forEach(function(manifest){
+      var path = resolve(root, manifest);
 
-    if (!exists(path)) return;
+      if (!exists(path)) return;
 
-    var json = require(path);
-    if (!json.version) return;
+      var json = require(path);
+      if (!json.version) return;
 
-    var v = json.version;
-    var p = json.private;
+      var v = json.version;
+      var p = json.private;
 
-    if (p && !v) return;
-    if (!v) throw new Error('no existing version found in "' + manifest + '"');
-    if (prev && v != prev) throw new Error('existing version in "' + manifest + '" does not match others');
+      if (p && !v) return;
+      if (!v) throw new Error('no existing version found in "' + manifest + '"');
+      if (prev && v != prev) throw new Error('existing version in "' + manifest + '" does not match others');
 
-    prev = v;
-    files[manifest] = json;
-  });
+      prev = v;
+      files[manifest] = json;
+    });
+  }else{
+    var path = resolve(root, manifests);
+
+      if (!exists(path)) return;
+
+      var json = require(path);
+      if (!json.version) return;
+
+      var v = json.version;
+      var p = json.private;
+
+      if (p && !v) return;
+      if (!v) throw new Error('no existing version found in "' + manifests + '"');
+      if (prev && v != prev) throw new Error('existing version in "' + manifests + '" does not match others');
+
+      prev = v;
+      files[manifests] = json;
+  }
 
   if (!~version.indexOf('.')) {
     var file = Object.keys(files)[0];
